@@ -1,0 +1,49 @@
+# OPTIONAL — Animated Contribution Snake
+#
+# This workflow is NOT required for your README to work. Your README already
+# has a working static activity graph. Only add this if you also want an
+# animated "snake eating your contributions" graphic.
+#
+# SETUP:
+# 1. In your profile repo (the one named exactly like your GitHub username),
+#    create the folder path: .github/workflows/
+# 2. Save this file there as: snake.yml
+# 3. Commit and push. Go to the "Actions" tab of that repo and run the
+#    "generate snake" workflow once manually (or wait for the schedule).
+# 4. It will create a branch called "output" containing the generated SVG.
+# 5. Add this line to your README wherever you'd like the snake to appear,
+#    replacing YOUR_GITHUB_USERNAME:
+#
+#    <img src="https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/YOUR_GITHUB_USERNAME/output/github-contribution-grid-snake-dark.svg" width="100%"/>
+
+name: generate snake
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # runs once a day
+  workflow_dispatch: {} # allows manual run from the Actions tab
+  push:
+    branches:
+      - main
+
+jobs:
+  generate:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: generate github-contribution-grid-snake.svg
+        uses: Platane/snk@v3
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          outputs: |
+            dist/github-contribution-grid-snake.svg
+            dist/github-contribution-grid-snake-dark.svg?palette=github-dark
+
+      - name: push to output branch
+        uses: crazy-max/ghaction-github-pages@v4
+        with:
+          target_branch: output
+          build_dir: dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
