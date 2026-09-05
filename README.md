@@ -10,7 +10,7 @@
 
 <br/>
 
-> *"Building real-world software at the intersection of full-stack engineering and AI."* 🚀
+> *"Building real-world software at the intersection of full-stack engineering and AI."* 
 
 <br/>
 
